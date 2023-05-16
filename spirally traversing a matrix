@@ -1,0 +1,55 @@
+Given a matrix of size r*c. Traverse the matrix in spiral form.
+Example 1:
+Input: r = 4, c = 4
+matrix[][] = {{1, 2, 3, 4},
+           {5, 6, 7, 8},
+           {9, 10, 11, 12},
+           {13, 14, 15,16}}
+Output: 1 2 3 4 8 12 16 15 14 13 9 5 6 7 11 10
+
+CODE:
+
+
+
+class Solution
+{
+    //Function to return a list of integers denoting spiral traversal of matrix.
+    static ArrayList<Integer> spirallyTraverse(int matrix[][], int r, int c)
+    {
+        // code here 
+        ArrayList<Integer> a=new ArrayList<>(); 
+      int startRow = 0;
+      int startCol = 0;
+      int endRow = matrix.length-1;
+      int endCol = matrix[0].length-1;
+      
+      while(startRow <= endRow && startCol <= endCol){
+          for(int j=startCol; j<=endCol; j++){
+              a.add(matrix[startRow][j]);
+          }
+          for(int i=startRow+1; i<=endRow; i++){
+              a.add(matrix[i][endCol]);
+          }
+          
+          
+          for(int j=endCol-1; j>=startCol; j--){
+               if(startRow == endRow){
+                  break;
+              }
+             a.add(matrix[endRow][j]);
+          }
+          
+          for(int i=endRow-1; i>=startRow+1; i--){
+              if(startCol == endCol){
+                  break;
+              }
+              a.add(matrix[i][startCol]);
+          }
+          startCol++;
+          startRow++;
+          endCol--;
+          endRow--;
+      }
+      return a;
+    }
+}
