@@ -7,7 +7,7 @@ Output: 6 5 4 3 2 1
 Explanation: After reversing the list, 
 elements are 6->5->4->3->2->1.
 
-CODE:
+CODE 1:
 
 //{ Driver Code Starts
 import java.util.*;
@@ -91,5 +91,33 @@ class Solution
             curr=nex;
         }
         return pre;
+    }
+}
+
+CODE 2:
+
+class Solution 
+{
+	ListNode reverse(ListNode curr, ListNode prev, ListNode forw) 
+  {
+    curr.next = prev;
+	  if(forw==null)
+		  return curr;
+			
+    return(reverse(forw, curr, forw.next)); 
+  }
+       
+    public ListNode reverseList(ListNode head) 
+    {
+        ListNode curr,prev,forw;
+        
+        if(head==null||head.next==null)
+            return(head);
+        
+        prev = null;
+        curr = head;
+        forw = curr.next;
+        
+        return(reverse(curr,prev,forw));
     }
 }
