@@ -5,7 +5,65 @@ Input: Linked list: 17->15->8->9->2->4->6
 Output: 8->2->4->6->17->15->9
 Explaination: 8,2,4,6 are the even numbers so they appear first and 17,15,9 are odd numbers that appear later.
 
-CODE:
+CODE 1:
+
+class Solution 
+{
+    Node divide(Node head) 
+    {
+        Node ep=null, op=null, p=head, ehead=null, ohead=null;
+        
+        while(p!=null)
+        {
+            if((p.data)%2==0)
+            {
+                if(ehead==null)
+                {
+                    ehead=p;
+                    ep=ehead;
+                }
+                else
+                {
+                    ep.next=p;
+                    ep=ep.next;
+                }
+            }
+            else
+            {
+                if(ohead==null)
+                {
+                    ohead=p;
+                    op=ohead;
+                }
+                else
+                {
+                    op.next=p;
+                    op=op.next;
+                }
+            }
+            p=p.next;
+        }
+        
+        if(op!=null)
+        op.next=null;
+        
+        if(ep!=null)
+        ep.next=null;
+        
+        Node nhead=null;
+        if(ehead!=null)
+        {
+            nhead=ehead;
+            ep.next=ohead;
+        }
+        else
+            nhead=ohead;
+
+        return nhead;
+    }
+}
+
+CODE 2:
 
 class Solution 
 {
