@@ -1,0 +1,40 @@
+Given an array of strings, return all groups of strings that are anagrams. The groups must be created in order of their appearance in the original array. Look at the sample case for clarification. Note: The final output will be in lexicographic order.
+
+Example 1:
+Input:
+N = 5
+words[] = {act,god,cat,dog,tac}
+Output: 
+act cat tac 
+god dog
+Explanation: There are 2 groups of anagrams "god", "dog" make group 1. "act", "cat", "tac" make group 2.
+
+CODE:
+
+class Solution 
+{
+    public List<List<String>> Anagrams(String[] str) 
+    {
+        // Code here
+        HashMap<String,ArrayList<String>>mp=new HashMap<>();
+        
+        for(int i=0; i<str.length; i++)
+        {
+            char[] temp= str[i].toCharArray();
+            Arrays.sort(temp);
+            String tp=new String(temp);
+            
+            ArrayList<String> al= mp.get(tp);
+            
+            if(al==null)
+                al=new ArrayList<>();
+                
+            al.add(str[i]);
+            mp.put(tp, al);
+        }       
+        List<List<String>>ans=new ArrayList<>(mp.values());
+            
+        return ans;
+    }
+    
+}
