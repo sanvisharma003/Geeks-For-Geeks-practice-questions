@@ -1,0 +1,55 @@
+Consider a rat placed at (0, 0) in a square matrix mat of order n* n. It has to reach the destination at (n - 1, n - 1). Find all possible paths that the rat can take to reach from source to destination. The directions in which the rat can move are 'U'(up), 'D'(down), 'L' (left), 'R' (right). Value 0 at a cell in the matrix represents that it is blocked and rat cannot move to it while value 1 at a cell in the matrix represents that rat can be travel through it. Note: In a path, no cell can be visited more than one time. If the source cell is 0, the rat cannot move to any other cell. In case of no path, return an empty list. The driver will output "-1" automatically.
+
+Examples:
+Input: mat[][] = [[1, 0, 0, 0],
+                [1, 1, 0, 1], 
+                [1, 1, 0, 0],
+                [0, 1, 1, 1]]
+Output: DDRDRR DRDDRR
+Explanation: The rat can reach the destination at (3, 3) from (0, 0) by two paths - DRDDRR and DDRDRR, when printed in sorted order we get DDRDRR DRDDRR
+
+CODE:
+
+class Solution 
+{
+    ArrayList<String>al= new ArrayList<>();
+    
+    public ArrayList<String> findPath(int[][] mat) 
+    {
+        StringBuilder sb = new StringBuilder();
+        find(mat, sb, 0, 0);
+        return al;
+    }
+    
+    public void find(int[][]mat, StringBuilder sb, int i, int j)
+    {        
+        if(i==-1 || i>=mat.length || j==-1 || j>=mat[0].length)
+            return;
+        
+        if( mat[i][j]!=1)
+            return;
+        
+        if(i==mat.length-1 && j==mat[0].length-1 && mat[i][j]==1)
+        {
+            al.add(sb.toString());
+            return;
+        }
+        
+        int temp = mat[i][j];
+        mat[i][j]=-1;
+        
+        find(mat, sb.append("D"), i+1, j);
+        sb.deleteCharAt(sb.length() - 1);
+        
+        find(mat, sb.append("R"), i, j+1);
+        sb.deleteCharAt(sb.length() - 1);
+        
+        find(mat, sb.append("U"), i-1, j);
+        sb.deleteCharAt(sb.length() - 1);
+        
+        find(mat, sb.append("L"), i, j-1);
+        sb.deleteCharAt(sb.length() - 1);
+        
+        mat[i][j]=temp;
+    }
+}
