@@ -1,0 +1,139 @@
+Given two strings S and P. Find the smallest window in the string S consisting of all the characters(including duplicates) of the string P.  Return "-1" in case there is no such window present. In case there are multiple such windows of same length, return the one with the least starting index. Note : All characters are in Lowercase alphabets. 
+
+Example 1:
+Input: S = "timetopractice" P = "toc"
+Output: toprac
+Explanation: "toprac" is the smallest substring in which "toc" can be found.
+
+CODE 1:
+
+
+
+class Solution
+{
+    public static String smallestWindow(String s, String p)
+    {
+        HashMap<Character,Integer> pmp=new HashMap<>();
+        
+        for(int i=0; i<p.length(); i++)
+            pmp.put(p.charAt(i), pmp.getOrDefault(p.charAt(i),0)+1);
+        
+        HashMap<Character,Integer> smp=new HashMap<>();
+        int l=0, r=0, cnt=0 , ansl=0, ansr=0, mx=Integer.MAX_VALUE;
+        
+        while(r<s.length())
+        {
+            if(l<=r)
+            {
+                if(cnt<p.length())
+                {
+                  smp.put(s.charAt(r), smp.getOrDefault(s.charAt(r), 0)+1);
+                  if(pmp.containsKey(s.charAt(r)) && (smp.get(s.charAt(r)) <= pmp.get(s.charAt(r))))
+                    cnt++;
+            
+                  r++;
+                }
+                else
+                {
+                  if(r-l < mx)
+                  {
+                    ansl=l;
+                    ansr=r;
+                    mx=r-l;
+                  }
+                  char temp=s.charAt(l);
+                
+                  if(!pmp.containsKey(temp) || (smp.get(temp) > pmp.get(temp)))
+                    smp.put(temp, smp.get(temp)-1);
+                    
+                  else if((pmp.containsKey(temp) && pmp.get(temp)!=0) && (smp.get(temp) <= pmp.get(temp)))
+                  {
+                    cnt--;
+                    smp.put(temp, smp.get(temp)-1);
+                  }
+                  l++;
+                }
+            }
+        }
+        
+        if(r==s.length())
+        {
+            while(l<r && cnt>=p.length())
+            {
+                if(r-l < mx)
+                {
+                    ansl=l;
+                    ansr=r;
+                    mx=r-l;
+                }
+                char temp=s.charAt(l);
+                
+                if(!pmp.containsKey(temp) || (smp.get(temp) > pmp.get(temp)))
+                    smp.put(temp, smp.get(temp)-1);
+                    
+                else if((pmp.containsKey(temp) && pmp.get(temp)!=0) && (smp.get(temp) <= pmp.get(temp)))
+                {
+                    cnt--;
+                    smp.put(temp, smp.get(temp)-1);
+                }
+                
+                l++;
+            }
+        }
+        
+        if(ansl==0 && ansr==0)
+            return "-1";
+        
+        return s.substring(ansl, ansr);
+    }
+}
+
+CODE 2:
+
+class Solution
+{
+    public static String smallestWindow(String s, String p) {
+    HashMap<Character, Integer> pmp = new HashMap<>();
+    
+    for (int i = 0; i < p.length(); i++) 
+        pmp.put(p.charAt(i), pmp.getOrDefault(p.charAt(i), 0) + 1);
+    
+    HashMap<Character, Integer> smp = new HashMap<>();
+    int l = 0, r = 0, cnt = 0, ansl = -1, ansr = -1, mx = Integer.MAX_VALUE;
+    
+    while (r < s.length()) 
+    {
+        char rightChar = s.charAt(r);
+        smp.put(rightChar, smp.getOrDefault(rightChar, 0) + 1);
+        
+        if (pmp.containsKey(rightChar) && smp.get(rightChar) <= pmp.get(rightChar)) {
+            cnt++;
+        }
+        
+        while (cnt == p.length()) 
+        {
+            if (r - l + 1 < mx) 
+            {
+                ansl = l;
+                ansr = r;
+                mx = r - l + 1;
+            }
+            
+            char leftChar = s.charAt(l);
+            
+            if (pmp.containsKey(leftChar) && smp.get(leftChar) <= pmp.get(leftChar)) 
+                cnt--;
+            
+            smp.put(leftChar, smp.get(leftChar) - 1);
+            l++;
+        }
+        r++;
+    }
+    
+    if (ansl == -1) 
+        return "-1"; 
+    
+    return s.substring(ansl, ansr + 1); 
+}
+
+}
