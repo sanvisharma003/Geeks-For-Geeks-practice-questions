@@ -1,0 +1,86 @@
+Given a grid of dimension nxm where each cell in the grid can have values 0, 1 or 2 which has the following meaning: 0 : Empty cell 1 : Cells have fresh oranges 2 : Cells have rotten oranges 
+We have to determine what is the earliest time after which all the oranges are rotten. A rotten orange at index [i,j] can rot other fresh orange at indexes [i-1,j], [i+1,j], [i,j-1], [i,j+1] (up, down, left and right) in unit time. 
+ 
+Example 1:
+Input: grid = {{0,1,2},{0,1,2},{2,1,1}}
+Output: 1
+Explanation: The grid is-
+0 1 2
+0 1 2
+2 1 1
+Oranges at positions (0,2), (1,2), (2,0) will rot oranges at (0,1), (1,1), (2,2) and (2,1) in unit time.
+
+CODE:
+
+class Solution
+{
+    public int orangesRotting(int[][] grid)
+    {
+        Queue<Pair>qu=new LinkedList<>();
+
+        for(int i=0; i<grid.length; i++)
+        {
+            for(int j=0; j<grid[0].length; j++)
+            {
+                if(grid[i][j]==2)
+                    qu.add(new Pair(i,j,0));
+            }
+        }
+        
+        int ans=0;
+        while(!qu.isEmpty())
+        {
+            int r=qu.peek().row;
+            int c=qu.peek().column;
+            int t=qu.peek().time;
+            
+            qu.remove();
+            
+            if(r-1>=0 && grid[r-1][c]==1 )
+            {
+                grid[r-1][c]=2;
+                qu.add(new Pair(r-1, c, t+1));
+            }
+            if(r+1<grid.length && grid[r+1][c]==1)
+            {
+                grid[r+1][c]=2;
+                qu.add(new Pair(r+1, c, t+1));
+            }
+            if(c-1>=0 && grid[r][c-1]==1 )
+            {
+                grid[r][c-1]=2;
+                qu.add(new Pair(r, c-1, t+1));
+            }
+            if(c+1<grid[0].length && grid[r][c+1]==1)
+            {
+                grid[r][c+1]=2;
+                qu.add(new Pair(r, c+1, t+1));
+            }
+            ans=t;
+        }
+        
+        for(int i=0; i<grid.length; i++)
+        {
+            for(int j=0; j<grid[0].length; j++)
+            {
+                if(grid[i][j]==1)
+                    return -1;
+            }
+        }
+        return ans;
+    }
+}
+
+class Pair 
+{
+    public int column;
+    public int row;
+    public int time;
+
+    public Pair(int row, int column, int time) 
+    {
+        this.column = column;
+        this.row = row;
+        this.time = time;
+    }
+}
